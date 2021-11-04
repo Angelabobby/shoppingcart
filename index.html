@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="app">
+        <!-- v-if和v-else实现当购物车为空时切换元素，删除购物车div元素，显示h2元素 -->
+        <div v-if="books.length">
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>书籍名称</th>
+                        <th>出版日期</th>
+                        <th>价格</th>
+                        <th>购买数量</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, index) in books">
+                        <td>{{item.id}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.date}}</td>
+                        <!-- 使用过滤器：竖杠左边为传入过滤器的参数，竖杠右边为过滤器的函数名（不需要带括号） -->
+                        <td>{{item.price | showPrice}}</td>
+                        <td>
+                            <!-- v-bind实现属性绑定：当商品数量小于或等于1时，禁用-按钮 -->
+                            <button @click="decrement(index)" v-bind:disabled="item.count <= 1">-</button>
+                            {{item.count}}
+                            <button @click="increment(index)">+</button>
+                        </td>
+                        <td>
+                            <button @click="removeItem(index)">移除</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- 使用总价方法，返回总价值，再传入过滤器返回格式化展示的价格 -->
+            <h2>总价：{{totalPrice | showPrice}}</h2>
+        </div>
+        <!-- 当books数组长度为0时，启用v-else对应的元素，即显示购物车为空 -->
+        <h2 v-else>购物车为空</h2>
+    </div>
+</body>
+<script src="vue.js"></script>
+<script src="main.js"></script>
+
+</html>
